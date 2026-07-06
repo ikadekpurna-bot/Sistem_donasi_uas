@@ -1,5 +1,5 @@
 <?php
-require 'middleware.php';
+require 'core/middleware.php';
 
 wajib_login();
 

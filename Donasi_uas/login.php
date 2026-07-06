@@ -1,7 +1,7 @@
 <?php
 session_start();
-require 'koneksi.php';
-require 'security.php';
+require 'config/koneksi.php';
+require 'core/security.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = escape_html($_POST['email']);

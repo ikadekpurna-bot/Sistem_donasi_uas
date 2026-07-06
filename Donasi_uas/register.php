@@ -1,6 +1,6 @@
 <?php
-require 'koneksi.php';
-require 'security.php';
+require 'config/koneksi.php';
+require 'core/security.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nama = escape_html($_POST['nama_lengkap']);
