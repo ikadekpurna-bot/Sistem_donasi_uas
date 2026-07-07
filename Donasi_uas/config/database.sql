@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS db_crowdfunding;
-USE db_crowdfunding;
+CREATE DATABASE IF NOT EXISTS db_crowdfundig;
+USE db_crowdfundig;
 
 CREATE TABLE users (
     id_user INT AUTO_INCREMENT PRIMARY KEY,

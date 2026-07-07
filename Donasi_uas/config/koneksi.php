@@ -1,6 +1,6 @@
 <?php
 $host = '127.0.0.1';
-$db   = 'db_crowdfunding';
+$db   = 'db_crowdfundig';
 $user = 'root';
 $pass = '';
 $charset = 'utf8mb4';
