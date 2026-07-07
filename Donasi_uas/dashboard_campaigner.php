@@ -1,12 +1,10 @@
 <?php
-session_start();
+require __DIR__ . '/core/middleware.php';
 require __DIR__ . '/config/koneksi.php';
 require __DIR__ . '/core/security.php';
 
-if (!isset($_SESSION['id_user']) || $_SESSION['role'] !== 'Campaigner') {
-    header("Location: login.php");
-    exit;
-}
+wajib_login();
+cek_role('Campaigner');
 
 $id_user = (int) $_SESSION['id_user'];
 $nama_campaigner = $_SESSION['nama_lengkap'];
