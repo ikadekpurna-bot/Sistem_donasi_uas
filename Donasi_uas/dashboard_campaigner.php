@@ -2,36 +2,28 @@
 session_start();
 require 'config/koneksi.php';
 require 'core/security.php';
-
-// Proteksi Halaman: Pastikan hanya user dengan role 'Campaigner' yang bisa mengakses
 if (!isset($_SESSION['id_user']) || $_SESSION['role'] !== 'Campaigner') {
-    header("Location: login.php"); // Sesuaikan dengan nama file login tim Anda
+    header("Location: login.php");
     exit;
 }
 
 $id_user = $_SESSION['id_user'];
 $nama_campaigner = $_SESSION['nama_lengkap'];
 
-// ==========================================
-// 1. PROSES SUBMIT KAMPANYE BARU
-// ==========================================
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['ajukan_kampanye'])) {
     $judul        = escape_html($_POST['judul']);
     $id_kategori  = intval($_POST['id_kategori']);
     $deskripsi    = escape_html($_POST['deskripsi']);
     $target_dana  = floatval($_POST['target_dana']);
     
-    // Proses Upload Gambar Banner
     $nama_gambar  = $_FILES['gambar_banner']['name'];
     $tmp_gambar   = $_FILES['gambar_banner']['tmp_name'];
     
-    // Pengaturan folder upload (Pastikan folder 'uploads/' sudah dibuat)
     $ekstensi     = pathinfo($nama_gambar, PATHINFO_EXTENSION);
     $nama_baru    = "banner_" . time() . "." . $ekstensi;
     $target_path  = "uploads/" . $nama_baru;
 
     if (move_uploaded_file($tmp_gambar, $target_path)) {
-        // Query Simpan Kampanye dengan status awal 'Pending'
         $stmt = $pdo->prepare("INSERT INTO kampanye (id_user, id_kategori, judul, deskripsi, target_dana, gambar_banner, status_kampanye) VALUES (?, ?, ?, ?, ?, ?, 'Pending')");
         
         if ($stmt->execute([$id_user, $id_kategori, $judul, $deskripsi, $target_dana, $nama_baru])) {
@@ -44,14 +36,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['ajukan_kampanye'])) {
     }
 }
 
-// ==========================================
-// 2. AMBIL DATA UNTUK VIEW (Kategori & Kampanye Saya)
-// ==========================================
-// Ambil daftar kategori untuk dropdown form
 $kategori_stmt = $pdo->query("SELECT * FROM kategori");
 $daftar_kategori = $kategori_stmt->fetchAll();
 
-// Ambil list kampanye milik campaigner saat ini + hitung total dana yang terkumpul dari tabel transaksi
 $query_kampanye = "
     SELECT k.*, cat.nama_kategori,
            COALESCE(SUM(t.nominal), 0) AS total_terkumpul
@@ -100,7 +87,6 @@ $status_kampanye_saya = $kampanye_stmt->fetchAll();
     </div>
 
     <div class="container">
-        <!-- FORM PENGALIRAN KAMPANYE BARU -->
         <div class="box-form">
             <h3>Buat Pengajuan Kampanye</h3>
             <form method="POST" action="" enctype="multipart/form-data">
@@ -138,7 +124,6 @@ $status_kampanye_saya = $kampanye_stmt->fetchAll();
             </form>
         </div>
 
-        <!-- DAFTAR KAMPANYE SAYA -->
         <div class="box-data">
             <h3>Riwayat Kampanye Anda</h3>
             <table>
