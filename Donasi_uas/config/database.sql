@@ -46,3 +46,12 @@ CREATE TABLE transaksi (
     FOREIGN KEY (id_kampanye) REFERENCES kampanye(id_kampanye) ON DELETE CASCADE,
     FOREIGN KEY (id_user) REFERENCES users(id_user) ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS laporan_progres (
+    id_laporan INT AUTO_INCREMENT PRIMARY KEY,
+    id_kampanye INT NOT NULL,
+    judul_laporan VARCHAR(150) NOT NULL,
+    isi_laporan TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_kampanye) REFERENCES kampanye(id_kampanye) ON DELETE CASCADE
+);
